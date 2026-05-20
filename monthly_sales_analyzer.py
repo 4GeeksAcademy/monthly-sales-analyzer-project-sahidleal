@@ -24,29 +24,67 @@ sales_data = [
 
 def total_sales_by_product(data, product_key):
     """Calculates the total sales of a specific product in 30 days."""
-    pass
+    
+    total_ventas = 0
+    for dia in data:
+        total_ventas += dia[product_key]
+    return total_ventas
 
+#ventas_a = total_sales_by_product(sales_data, "product_a")
+#print(f"Ventas totales del Producto A: {ventas_a}")
 
 def average_daily_sales(data, product_key):
     """Calculates the average daily sales of a specific product."""
-    pass
+    total = total_sales_by_product(data, product_key)
+    total_dias = len(data)
+    promedio = total / total_dias
+    return promedio
+
+#promedio_a = average_daily_sales(sales_data, "product_a")
+#print(f"Promedio Ventas del Producto A: {promedio_a}")
 
 
 def best_selling_day(data):
     """Finds the day with the highest total sales."""
-    pass
+    max_ventas = 0
+    dia_ganador = None
 
+    for fila in data:
+        # 1. Sumamos las ventas de los tres productos de este día específico
+        total_del_dia = fila["product_a"] + fila["product_b"] + fila["product_c"]
+        
+        # 2. Si este día superó al récord anterior, actualizamos los datos
+        if total_del_dia > max_ventas:
+            max_ventas = total_del_dia
+            dia_ganador = fila["day"]
+            
+    # Devolvemos el número del día que más vendió
+    return dia_ganador
+
+#dia_record = best_selling_day(sales_data)
+#print(f"El día con mayores ventas totales fue el día: {dia_record}")
 
 def days_above_threshold(data, product_key, threshold):
     """Counts how many days the sales of a product exceeded a given threshold."""
-    pass
-
+    contador_dias = 0
+    
+    for fila in data:
+        if fila[product_key] > threshold:
+            contador_dias += 1
+    return contador_dias
 
 def top_product(data):
     """Determines which product had the highest total sales in 30 days."""
-    pass
+    total_a = total_sales_by_product(data, "product_a")
+    total_b = total_sales_by_product(data, "product_b")
+    total_c = total_sales_by_product(data, "product_c")
 
-
+    if total_a > total_b and total_a > total_c:
+        return "product_a"
+    elif total_b > total_a and total_b > total_c:
+        return "product_b"
+    else:
+        return "product_c"
 
 # Function tests
 print("Total sales of product_a:", total_sales_by_product(sales_data, "product_a"))
